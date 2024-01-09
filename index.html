@@ -1,9 +1,501 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-    <title>MindCraft™ | Bond with your kids in a joyful way</title>
+    <title>MindCraft&trade; | Play kit for kids</title>
+    <style>
+        :root {
+            --blue: #2CD3E1;
+            --pink: #F266AB;
+            --orange: #FFB84C;
+            --violet: #A459D1;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
+            letter-spacing: .02em;
+        }
+
+        h1, h2, h3, p {
+            margin: 0;
+        }
+
+        input, textarea {
+            border: 2px solid var(--blue);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            color: var(--pink);
+            margin: 5px 0;
+        }
+
+        input:focus, textarea:focus {
+            border: 2px solid var(--pink);
+            outline: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+        .header {
+            background-color: var(--orange);
+        }
+
+        .header__links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100px;
+        }
+
+        .header__menu {
+        }
+
+        .billboard {
+            height: 75vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .billboard__image {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(0, -50%);
+            /*filter: blur(1px);*/
+        }
+
+        .billboard__text {
+            max-width: 1200px;
+            margin: 0 auto;
+
+            position: absolute;
+            top: 75%;
+            left: 0;
+            right: 0;
+            transform: translateY(-75%);
+            color: white;
+            text-align: right;
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .info__title {
+            padding-bottom: 50px;
+        }
+
+        .info__cards {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .counter {
+            background-color: var(--pink);
+            padding: 100px 0;
+            color: white;
+            text-align: center;
+
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            max-width: 375px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+        }
+
+        .card__thumbnail {
+            height: 250px;
+            max-width: 375px;
+            overflow: hidden;
+            width: fit-content;
+            position: relative;
+        }
+
+        .card__title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            color: white;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .card__content {
+            padding: 20px;
+        }
+
+        .pricing {
+            background-color: var(--violet);
+            padding: 100px 0;
+            color: white;
+            text-align: center;
+
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+        }
+
+        .pricing--title {
+            padding-bottom: 50px;
+        }
+
+        .contact {
+            text-align: center;
+        }
+
+        .footer {
+            background-color: var(--orange);
+            padding: 15px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .button {
+            padding: 12px 24px;
+            border-radius: 6px;
+            background-color: var(--blue);
+            color: white;
+            border: none;
+            cursor: pointer;
+
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: var(--pink) !important;
+        }
+
+        .button--large {
+            padding: 14px 28px;
+            font-size: 18px;
+        }
+
+        .button--right-spaced {
+            margin-right: 14px;
+        }
+
+        .button--violet {
+            background-color: var(--violet);
+        }
+
+        .spacer-y {
+            height: 100px;
+        }
+
+        .color__violet {
+            color: var(--violet);
+        }
+
+        .color__pink {
+            color: var(--pink);
+        }
+
+        .color__orange {
+            color: var(--orange);
+        }
+
+        .color__blue {
+            color: var(--blue);
+        }
+
+        .color__gray {
+            color: darkgray;
+        }
+
+        @media screen and (max-device-width: 480px) {
+            .container {
+                max-width: 750px;
+            }
+
+            .billboard {
+                height: 25vh;
+            }
+
+            .billboard__text {
+                max-width: 750px;
+            }
+
+            .info__cards {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                margin: 30px 0;
+                max-width: 501px;
+            }
+
+            .card__thumbnail {
+                height: 334px;
+                max-width: 501px;
+            }
+        }
+    </style>
+    <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+    <script type="text/javascript">
+      function ValidateForm(frm) {
+        if (frm.Name.value == "") {
+          alert('Name is required.');
+          frm.Name.focus();
+          return false;
+        }
+        if (frm.FromEmailAddress.value == "") {
+          alert('Email address is required.');
+          frm.FromEmailAddress.focus();
+          return false;
+        }
+        if (frm.FromEmailAddress.value.indexOf("@") < 1 || frm.FromEmailAddress.value.indexOf(".") < 1) {
+          alert('Please enter a valid email address.');
+          frm.FromEmailAddress.focus();
+          return false;
+        }
+        if (frm.Comments.value == "") {
+          alert('Please enter comments or questions.');
+          frm.Comments.focus();
+          return false;
+        }
+        return true;
+      }
+    </script>
 </head>
 <body>
-MindCraft™ will be live soon.
+<div class="header">
+    <div class="container">
+        <div class="header__links">
+            <div>
+                <h1 style="font-size: 40px" class="color__violet">MindCraft&trade;</h1>
+            </div>
+
+            <div class="header__menu">
+                <a class="button button--large button--violet button--right-spaced" href="#pricing">Pricing Plans</a>
+                <a class="button button--large"
+                   href="https://billing.stripe.com/p/login/4gwcPncAMaNX5ji144"
+                   target="_blank"
+                >
+                    Manage your subscription
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="billboard">
+    <div class="billboard__image">
+        <img src="./images/iStock-1235304853.jpg"
+             width="100%" alt="MindCraft&trade;">
+    </div>
+    <div class="billboard__text">
+        <h1 style="font-size: 100px; margin: 0" class="color__orange">MindCraft&trade;</h1>
+        <h3 style="font-size: 59px; margin: 0" class="">Play kit for kids</h3>
+        <h3 style="font-size: 25px; margin: 0" class="">Bond with your kids in a joyful way</h3>
+    </div>
+</div>
+
+<div class="spacer-y"></div>
+<!--color__blue-->
+<div class="info container">
+    <div class="info__title">
+        <h1 class="color__blue">How does your kid benefit by playing with a MindCraft&trade; kit?</h1>
+    </div>
+
+    <div class="info__cards">
+        <div class="card">
+            <div class="card__thumbnail">
+                <img width="100%"
+                     loading="lazy"
+                     src="./images/iStock-1235308078.jpg"
+                     alt="info 1"/>
+                <div class="card__title">
+                    <h1>Educational gain</h1>
+                </div>
+            </div>
+
+            <div class="card__content">
+                <h3 class="color__blue">Learning by doing is the best way to learn.</h3>
+                <br/>
+                <small class="color__gray">
+                    All MindCraft&trade; play kits are designed by local teachers and supplement school's
+                    curriculum.
+                </small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card__thumbnail">
+                <img width="100%"
+                     loading="lazy"
+                     src="./images/iStock-1235304311.jpg"
+                     alt="info 2"/>
+                <div class="card__title">
+                    <h1>Cognitive skills</h1>
+                </div>
+            </div>
+            <div class="card__content">
+                <h3 class="color__blue">Great cognitive skills lead to better quality of life.</h3>
+                <br/>
+                <small class="color__gray">
+                    All MindCraft&trade; play kits are designed to improve attention span, problem-solving skills.
+                </small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card__thumbnail">
+                <img width="100%"
+                     loading="lazy"
+                     src="./images/iStock-1235308601.jpg"
+                     alt="info 3"/>
+                <div class="card__title">
+                    <h1>Hands-on time</h1>
+                </div>
+            </div>
+            <div class="card__content">
+                <h3 class="color__blue">
+                    Reducing screen time improves physical health.
+                </h3>
+                <br/>
+                <small class="color__gray">
+                    All MindCraft&trade; play kits are hands-on exercises.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="spacer-y"></div>
+
+<div id="pricing" class="pricing">
+    <h1 class="pricing--title">Pricing Plans</h1>
+
+    <stripe-pricing-table pricing-table-id="prctbl_1OHCJrKUILamrGrdTpuIQgJD"
+                          publishable-key="pk_live_51OH2uCKUILamrGrda4BIwMISg9wFa8ZemFiVveSsin8XypMrVfIdVgKa41V3N65pnLGZ6yGLSGzMKDUPpYnmd0Eg003hjUBq78">
+    </stripe-pricing-table>
+</div>
+
+<div class="spacer-y"></div>
+
+<div class="info container">
+    <div class="info__title">
+        <h1 class="color__blue">Why should you as parent buy a MindCraft&trade; play kit for your kid?</h1>
+    </div>
+
+    <div class="info__cards">
+        <div class="card">
+            <div class="card__thumbnail">
+                <img width="100%"
+                     loading="lazy"
+                     src="./images/iStock-1235304856.jpg"
+                     alt="info 1"/>
+                <div class="card__title">
+                    <h1>Joyful time</h1>
+                </div>
+            </div>
+
+            <div class="card__content">
+                <h3 class="color__blue">
+                    Bond with your kids while both of you are having fun.
+                </h3>
+                <br/>
+                <small class="color__gray">
+                    All MindCraft&trade; play kits include instructions and learning goals for your kid.
+                </small>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card__thumbnail">
+                <img width="100%"
+                     loading="lazy"
+                     src="./images/iStock-1235303550.jpg"
+                     alt="info 2"/>
+                <div class="card__title">
+                    <h1>Unique activity</h1>
+                </div>
+            </div>
+            <div class="card__content">
+                <h3 class="color__blue">
+                    Try a new way to bond with your kids.
+                </h3>
+                <br/>
+                <small class="color__gray">
+                    All MindCraft&trade; play kits are designed to be a unique activity between parents and kids.
+                </small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card__thumbnail">
+                <img width="100%"
+                     loading="lazy"
+                     src="./images/iStock-1235305406.jpg"
+                     alt="info 3"/>
+                <div class="card__title">
+                    <h1>Support teachers</h1>
+                </div>
+            </div>
+            <div class="card__content">
+                <h3 class="color__blue">
+                    Foster a sense of community by supporting local teachers.
+                </h3>
+                <br/>
+                <small class="color__gray">
+                    All MindCraft&trade; play kits are designed by local teachers and compensated for doing so.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="spacer-y"></div>
+
+<div class="counter">
+    <h1>Monthly happy kids counter &#127881;</h1>
+    <h1 style="font-size: 120px">+200</h1>
+</div>
+
+<div class="spacer-y"></div>
+
+<div class="contact">
+    <h1 class="color__pink">Contact us</h1>
+    <h3 class="color__pink">We would love to hear from you!</h3>
+    <form style="margin-top: 20px" action="//submit.form" id="ContactUs100" method="post"
+          onsubmit="return ValidateForm(this);">
+        <div>
+            <input name="Name" placeholder="Name" type="text" maxlength="60" style="width:100%;max-width:350px;"/>
+        </div>
+        <div>
+            <input name="FromEmailAddress" placeholder="Email" type="text" maxlength="90"
+                   style="width:100%;max-width:350px;"/>
+        </div>
+        <div>
+            <textarea name="Comments" placeholder="Comments" rows="7" cols="40"
+                      style="width:100%;max-width:350px;"></textarea>
+        </div>
+        <div style=" visibility: hidden"><a href="https://www.100forms.com" id="lnk100"
+                                            title="form to email">form to email</a></div>
+        <button class="button button--large" type="submit">Submit</button>
+        <script src="https://www.100forms.com/js/FORMKEY:GYBZJPDTECL4/SEND:agonikidd@gmail.com"
+                type="text/javascript"></script>
+    </form>
+</div>
+
+<div class="spacer-y"></div>
+
+<div class="footer">
+    <div>&copy; 2024 MindCraft&trade; Belgium</div>
+</div>
+
 </body>
 </html>
