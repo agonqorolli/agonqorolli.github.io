@@ -114,18 +114,20 @@
         .card {
             display: flex;
             flex-direction: column;
-            max-width: 375px;
+            width: 375px;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
         }
 
         .card__thumbnail {
-            height: 250px;
-            max-width: 375px;
-            overflow: hidden;
-            width: fit-content;
             position: relative;
+        }
+
+        .card__thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .card__title {
@@ -220,7 +222,7 @@
 
         @media screen and (max-device-width: 480px) {
             .container {
-                max-width: 750px;
+                max-width: 80vw;
             }
 
             .billboard {
@@ -228,7 +230,7 @@
             }
 
             .billboard__text {
-                max-width: 750px;
+                max-width: 80vw;
             }
 
             .info__cards {
@@ -237,13 +239,8 @@
             }
 
             .card {
-                margin: 30px 0;
-                max-width: 501px;
-            }
-
-            .card__thumbnail {
-                height: 334px;
-                max-width: 501px;
+                margin: 50px 0;
+                width: 70vw;
             }
         }
     </style>
